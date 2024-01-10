@@ -7,7 +7,8 @@
 <script setup lang="ts">
 import { computed, useCssModule } from 'vue';
 
-import { ButtonVariant } from '../typings';
+import { buttonVariant } from '../typings';
+import type { ButtonVariant } from '../typings';
 
 const props = defineProps<{
   variant: ButtonVariant;
@@ -19,11 +20,11 @@ const emits = defineEmits<{
 
 const style = useCssModule('style');
 
-const buttonVariantClass = computed(() => {
-  const variantClass = {
-    [ButtonVariant.DANGER]: style['button--danger'],
-    [ButtonVariant.PRIMARY]: style['button--primary'],
-    [ButtonVariant.SUCCESS]: style['button--success'],
+const buttonVariantClass = computed<string>(() => {
+  const variantClass: Record<ButtonVariant, string> = {
+    [buttonVariant.danger]: style['button--danger'],
+    [buttonVariant.primary]: style['button--primary'],
+    [buttonVariant.success]: style['button--success'],
   };
 
   return variantClass[props.variant];

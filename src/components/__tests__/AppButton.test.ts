@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { VueWrapper, mount } from '@vue/test-utils';
 
-import { ButtonVariant } from '../../typings';
+import { buttonVariant } from '../../typings';
 
 import AppButton from '../AppButton.vue';
 
@@ -10,7 +10,7 @@ describe('AppButton', () => {
 
   beforeEach(() => {
     wrapper = mount(AppButton, {
-      props: { variant: ButtonVariant.DANGER },
+      props: { variant: buttonVariant.danger },
       slots: { default: 'Title' },
     });
   });
