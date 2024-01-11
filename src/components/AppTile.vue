@@ -39,6 +39,11 @@ const emits = defineEmits<{
   padding: 0.375rem;
   border-radius: 0.375rem;
   border: 1px solid;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
 }
 
 .buttonsContainer {
