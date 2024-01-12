@@ -7,7 +7,7 @@
       draggable="true"
       test-id="tile"
       @change-color="emits('change-color', tile.id)"
-      @delete="emits('delete', tile.id)"
+      @delete="tileStore.deleteTile(tile.id)"
       @dragstart="onDragStart(index)"
       @dragend="onDragEnd"
       @dragover.prevent="onDragOver(index)"
@@ -16,30 +16,26 @@
 </template>
 
 <script setup lang="ts">
-import { ref, toRaw, toRefs, watch } from 'vue';
+import { ref } from 'vue';
 
+import { useTileStore } from '../stores';
 import type { Tile } from '../typings';
 
 import AppTile from './AppTile.vue';
 
-const props = defineProps<{
-  initialTiles: Tile[];
-}>();
-
 const emits = defineEmits<{
   (event: 'change-color', tileId: string): void;
-  (event: 'change-order', updatedTileList: Tile[]): void;
-  (event: 'delete', tileId: string): void;
 }>();
 
-const { initialTiles } = toRefs(props);
+const tileStore = useTileStore();
 
-watch(initialTiles, (updatedTiles: Tile[]) => {
-  tiles.value = updatedTiles;
+const tiles = ref<Tile[]>([...tileStore.tiles]);
+
+tileStore.$subscribe(() => {
+  tiles.value = [...tileStore.tiles];
 });
 
 const draggedIndex = ref<number | null>(null);
-const tiles = ref<Tile[]>(structuredClone(toRaw(initialTiles.value)));
 
 const onDragStart = (index: number) => {
   draggedIndex.value = index;
@@ -47,7 +43,7 @@ const onDragStart = (index: number) => {
 
 const onDragEnd = () => {
   draggedIndex.value = null;
-  emits('change-order', tiles.value);
+  tileStore.changeTilesOrder(tiles.value);
 };
 
 const onDragOver = (index: number) => {
