@@ -5,3 +5,8 @@ export const buttonVariant = {
 } as const;
 
 export type ButtonVariant = (typeof buttonVariant)[keyof typeof buttonVariant];
+
+export interface Tile {
+  id: string;
+  color: string;
+}
