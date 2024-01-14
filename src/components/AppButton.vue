@@ -1,5 +1,10 @@
 <template>
-  <button :class="[style.button, buttonVariantClass]" @click="emits('click')">
+  <button
+    :class="[style.button, buttonVariantClass]"
+    :disabled="disabled"
+    :type="type"
+    @click="emits('click')"
+  >
     <slot></slot>
   </button>
 </template>
@@ -7,12 +12,19 @@
 <script setup lang="ts">
 import { computed, useCssModule } from 'vue';
 
-import { buttonVariant } from '../typings';
-import type { ButtonVariant } from '../typings';
+import { buttonType, buttonVariant } from '../typings';
+import type { ButtonType, ButtonVariant } from '../typings';
 
-const props = defineProps<{
-  variant: ButtonVariant;
-}>();
+const props = withDefaults(
+  defineProps<{
+    disabled?: boolean;
+    type?: ButtonType;
+    variant: ButtonVariant;
+  }>(),
+  {
+    type: buttonType.button,
+  },
+);
 
 const emits = defineEmits<{
   (event: 'click'): void;
@@ -50,6 +62,11 @@ $focus-box-shadow: 0 0 0 0.25rem;
     box-shadow 0.15s ease-in-out;
   cursor: pointer;
 
+  &:disabled {
+    opacity: 0.65;
+    pointer-events: none;
+  }
+
   &:focus-visible {
     outline: 0;
   }
@@ -58,11 +75,6 @@ $focus-box-shadow: 0 0 0 0.25rem;
 .button--danger {
   background-color: colors.$button-danger;
   border-color: colors.$button-danger;
-
-  &:hover {
-    background-color: colors.$button-danger-dark-01;
-    border-color: colors.$button-danger-dark-02;
-  }
 
   &:active {
     background-color: colors.$button-danger-dark-02;
@@ -74,16 +86,16 @@ $focus-box-shadow: 0 0 0 0.25rem;
     border-color: colors.$button-danger-dark-02;
     box-shadow: $focus-box-shadow colors.$button-danger-focus-shadow;
   }
+
+  &:hover {
+    background-color: colors.$button-danger-dark-01;
+    border-color: colors.$button-danger-dark-02;
+  }
 }
 
 .button--primary {
   background-color: colors.$button-primary;
   border-color: colors.$button-primary;
-
-  &:hover {
-    background-color: colors.$button-primary-dark-01;
-    border-color: colors.$button-primary-dark-02;
-  }
 
   &:active {
     background-color: colors.$button-primary-dark-02;
@@ -95,16 +107,16 @@ $focus-box-shadow: 0 0 0 0.25rem;
     border-color: colors.$button-primary-dark-02;
     box-shadow: $focus-box-shadow colors.$button-primary-focus-shadow;
   }
+
+  &:hover {
+    background-color: colors.$button-primary-dark-01;
+    border-color: colors.$button-primary-dark-02;
+  }
 }
 
 .button--success {
   background-color: colors.$button-success;
   border-color: colors.$button-success;
-
-  &:hover {
-    background-color: colors.$button-success-dark-01;
-    border-color: colors.$button-success-dark-02;
-  }
 
   &:active {
     background-color: colors.$button-success-dark-02;
@@ -115,6 +127,11 @@ $focus-box-shadow: 0 0 0 0.25rem;
     background-color: colors.$button-success-dark-01;
     border-color: colors.$button-success-dark-02;
     box-shadow: $focus-box-shadow colors.$button-success-focus-shadow;
+  }
+
+  &:hover {
+    background-color: colors.$button-success-dark-01;
+    border-color: colors.$button-success-dark-02;
   }
 }
 </style>
