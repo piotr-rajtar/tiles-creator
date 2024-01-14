@@ -1,14 +1,32 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { VueWrapper, mount } from '@vue/test-utils';
+import { createTestingPinia } from '@pinia/testing';
+
+import { useTileStore } from '../../stores';
+import type { Tile } from '../../typings';
 
 import AppTile from '../AppTile.vue';
 
 describe('AppTile', () => {
   let wrapper: VueWrapper;
 
+  const testTile: Tile = { id: '1', color: '#FFFFFF' };
+
   beforeEach(() => {
     wrapper = mount(AppTile, {
-      props: { color: 'blue' },
+      props: { tile: testTile },
+      global: {
+        plugins: [
+          createTestingPinia({
+            createSpy: vi.fn,
+            initialState: {
+              tiles: {
+                tiles: [testTile],
+              },
+            },
+          }),
+        ],
+      },
     });
   });
 
@@ -22,20 +40,44 @@ describe('AppTile', () => {
     const backgroundColorStyle = tileStyles.find((style) => style.startsWith('background-color'));
     const backgroundColor = backgroundColorStyle?.split(':')[1].trim();
 
-    expect(backgroundColor).toBe('blue');
+    expect(backgroundColor).toBe('rgb(255, 255, 255)');
   });
 
-  it('emits changeColor event after change button click', () => {
+  it('calls setTileToEdit action after change button click', () => {
+    const store = useTileStore();
+
     const changeButton = wrapper.find('[test-id="changeButton"]');
     changeButton.trigger('click');
 
-    expect(wrapper.emitted()).toHaveProperty('change-color');
+    expect(store.setTileToEdit).toHaveBeenCalled();
   });
 
-  it('emits delete event after delete button click', () => {
+  it('does not call setTileToEdit action after change button click, when disabled', () => {
+    const store = useTileStore();
+    store.editedTile = testTile;
+
+    const changeButton = wrapper.find('[test-id="changeButton"]');
+    changeButton.trigger('click');
+
+    expect(store.setTileToEdit).not.toHaveBeenCalled();
+  });
+
+  it('calls deleteTile action after delete button click', () => {
+    const store = useTileStore();
+
     const deleteButton = wrapper.find('[test-id="deleteButton"]');
     deleteButton.trigger('click');
 
-    expect(wrapper.emitted()).toHaveProperty('delete');
+    expect(store.deleteTile).toHaveBeenCalled();
+  });
+
+  it('does not call deleteTile action after delete button click, when disabled', () => {
+    const store = useTileStore();
+    store.editedTile = testTile;
+
+    const deleteButton = wrapper.find('[test-id="deleteButton"]');
+    deleteButton.trigger('click');
+
+    expect(store.deleteTile).not.toHaveBeenCalled();
   });
 });

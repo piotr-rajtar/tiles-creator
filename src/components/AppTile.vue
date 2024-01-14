@@ -1,14 +1,24 @@
 <template>
-  <div :class="style.tile" :style="{ backgroundColor: color, borderColor: color }" test-id="tile">
+  <div
+    :class="[style.tile, { [style['tile--disabled']]: Boolean(editedTile) }]"
+    :style="{ backgroundColor: tile.color }"
+    test-id="tile"
+  >
     <div :class="style.buttonsContainer">
       <AppButton
         test-id="changeButton"
+        :disabled="Boolean(editedTile)"
         :variant="buttonVariant.primary"
-        @click="emits('change-color')"
+        @click="onChangeButtonClick"
       >
         Change
       </AppButton>
-      <AppButton test-id="deleteButton" :variant="buttonVariant.danger" @click="emits('delete')">
+      <AppButton
+        test-id="deleteButton"
+        :disabled="Boolean(editedTile)"
+        :variant="buttonVariant.danger"
+        @click="onDeleteButtonClick"
+      >
         Delete
       </AppButton>
     </div>
@@ -16,34 +26,57 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
+
+import { useTileStore } from '../stores';
 import { buttonVariant } from '../typings';
+import type { Tile } from '../typings';
 
 import AppButton from './AppButton.vue';
 
-defineProps<{
-  color: string;
+const props = defineProps<{
+  tile: Tile;
 }>();
 
-const emits = defineEmits<{
-  (event: 'change-color'): void;
-  (event: 'delete'): void;
-}>();
+const { deleteTile, setTileToEdit } = useTileStore();
+const { editedTile } = storeToRefs(useTileStore());
+
+const onChangeButtonClick = () => {
+  if (editedTile.value) {
+    return;
+  }
+
+  setTileToEdit(props.tile);
+};
+
+const onDeleteButtonClick = () => {
+  if (editedTile.value) {
+    return;
+  }
+
+  deleteTile(props.tile.id);
+};
 </script>
 
 <style lang="scss" module="style">
+@use '../scss/spacings.scss';
+
 .tile {
   display: flex;
   align-items: flex-end;
   width: 200px;
   height: 200px;
-  padding: 0.375rem;
-  border-radius: 0.375rem;
-  border: 1px solid;
+  padding: spacings.$spacing-unit;
+  border-radius: spacings.$spacing-unit;
   cursor: grab;
 
   &:active {
     cursor: grabbing;
   }
+}
+
+.tile--disabled {
+  pointer-events: none;
 }
 
 .buttonsContainer {
