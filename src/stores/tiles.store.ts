@@ -6,6 +6,7 @@ import type { Tile } from '../typings';
 import { getRandomColor } from '../utils/getRandomColor';
 
 export const useTileStore = defineStore('tiles', () => {
+  const editedTile = ref<Tile | null>(null);
   const tiles = ref<Tile[]>([]);
 
   const addTile = () => {
@@ -18,12 +19,42 @@ export const useTileStore = defineStore('tiles', () => {
   };
 
   const changeTilesOrder = (updatedTilesList: Tile[]) => {
-    tiles.value = updatedTilesList;
+    tiles.value = JSON.parse(JSON.stringify(updatedTilesList));
+  };
+
+  const closeEditMode = () => {
+    editedTile.value = null;
   };
 
   const deleteTile = (tileId: string) => {
     tiles.value = tiles.value.filter((tile) => tile.id !== tileId);
   };
 
-  return { tiles, addTile, changeTilesOrder, deleteTile };
+  const setTileToEdit = (tile: Tile) => {
+    editedTile.value = { ...tile };
+  };
+
+  const updateTile = (updatedTile: Tile) => {
+    tiles.value = tiles.value.map((tile) => {
+      if (tile.id !== updatedTile.id) {
+        return tile;
+      }
+
+      return {
+        ...tile,
+        color: updatedTile.color,
+      };
+    });
+  };
+
+  return {
+    editedTile,
+    tiles,
+    addTile,
+    changeTilesOrder,
+    closeEditMode,
+    deleteTile,
+    setTileToEdit,
+    updateTile,
+  };
 });

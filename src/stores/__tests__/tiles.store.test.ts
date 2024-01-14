@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { setActivePinia, createPinia } from 'pinia';
 
+import type { Tile } from '../../typings';
+
 import { useTileStore } from '../tiles.store';
 
 describe('Tile Store', () => {
@@ -26,6 +28,14 @@ describe('Tile Store', () => {
     expect(store.tiles).toEqual(reversedTiles);
   });
 
+  it('close edit mode', () => {
+    const store = useTileStore();
+    store.setTileToEdit({ id: '1', color: '#FFFFFF' });
+    store.closeEditMode();
+
+    expect(store.editedTile).toBeNull();
+  });
+
   it('delete tiles', () => {
     const store = useTileStore();
     store.addTile();
@@ -33,5 +43,24 @@ describe('Tile Store', () => {
 
     store.deleteTile(tile.id);
     expect(store.tiles.length).toBe(0);
+  });
+
+  it('set tile to edit', () => {
+    const store = useTileStore();
+    store.setTileToEdit({ id: '1', color: '#FFFFFF' });
+
+    expect(store.editedTile).toBeTruthy();
+    expect(store.editedTile!.id).toBe('1');
+    expect(store.editedTile!.color).toBe('#FFFFFF');
+  });
+
+  it('update tile', () => {
+    const store = useTileStore();
+    store.addTile();
+
+    const updatedTile: Tile = { ...store.tiles[0], color: '#000000' };
+    store.updateTile(updatedTile);
+
+    expect(store.tiles[0].color).toBe('#000000');
   });
 });
