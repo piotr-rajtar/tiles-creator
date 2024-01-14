@@ -6,17 +6,17 @@
   >
     <div :class="style.buttonsContainer">
       <AppButton
-        test-id="changeButton"
         :disabled="Boolean(editedTile)"
         :variant="buttonVariant.primary"
+        test-id="changeButton"
         @click="onChangeButtonClick"
       >
         Change
       </AppButton>
       <AppButton
-        test-id="deleteButton"
         :disabled="Boolean(editedTile)"
         :variant="buttonVariant.danger"
+        test-id="deleteButton"
         @click="onDeleteButtonClick"
       >
         Delete
