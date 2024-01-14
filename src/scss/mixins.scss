@@ -1,0 +1,13 @@
+@use './breakpoints.scss';
+
+@mixin tablet-screen {
+  @media (max-width: breakpoints.$tablet-screen) {
+    @content;
+  }
+}
+
+@mixin mobile-screen {
+  @media (max-width: breakpoints.$mobile-screen) {
+    @content;
+  }
+}
