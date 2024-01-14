@@ -45,13 +45,14 @@ const buttonVariantClass = computed<string>(() => {
 
 <style lang="scss" module="style">
 @use '../scss/colors.scss';
+@use '../scss/spacings.scss';
 
 $focus-box-shadow: 0 0 0 0.25rem;
 
 .button {
-  padding: 0.375rem 0.75rem;
+  padding: spacings.$spacing-unit 2 * spacings.$spacing-unit;
   border: 1px solid;
-  border-radius: 0.375rem;
+  border-radius: spacings.$spacing-unit;
   font-size: 1rem;
   line-height: 1.5;
   color: colors.$white;
