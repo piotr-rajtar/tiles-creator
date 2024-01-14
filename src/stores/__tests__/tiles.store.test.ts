@@ -10,7 +10,7 @@ describe('Tile Store', () => {
     setActivePinia(createPinia());
   });
 
-  it('add tiles', () => {
+  it('adds tiles', () => {
     const store = useTileStore();
     store.addTile();
 
@@ -28,7 +28,7 @@ describe('Tile Store', () => {
     expect(store.tiles).toEqual(reversedTiles);
   });
 
-  it('close edit mode', () => {
+  it('closes edit mode', () => {
     const store = useTileStore();
     store.setTileToEdit({ id: '1', color: '#FFFFFF' });
     store.closeEditMode();
@@ -36,7 +36,7 @@ describe('Tile Store', () => {
     expect(store.editedTile).toBeNull();
   });
 
-  it('delete tiles', () => {
+  it('deletes tiles', () => {
     const store = useTileStore();
     store.addTile();
     const tile = store.tiles[0];
@@ -45,7 +45,7 @@ describe('Tile Store', () => {
     expect(store.tiles.length).toBe(0);
   });
 
-  it('set tile to edit', () => {
+  it('sets tile to edit', () => {
     const store = useTileStore();
     store.setTileToEdit({ id: '1', color: '#FFFFFF' });
 
@@ -54,7 +54,7 @@ describe('Tile Store', () => {
     expect(store.editedTile!.color).toBe('#FFFFFF');
   });
 
-  it('update tile', () => {
+  it('updates tile', () => {
     const store = useTileStore();
     store.addTile();
 
