@@ -41,7 +41,7 @@ const props = defineProps<{
 const { deleteTile, setTileToEdit } = useTileStore();
 const { editedTile } = storeToRefs(useTileStore());
 
-const onChangeButtonClick = () => {
+const onChangeButtonClick = (): void => {
   if (editedTile.value) {
     return;
   }
@@ -49,7 +49,7 @@ const onChangeButtonClick = () => {
   setTileToEdit(props.tile);
 };
 
-const onDeleteButtonClick = () => {
+const onDeleteButtonClick = (): void => {
   if (editedTile.value) {
     return;
   }

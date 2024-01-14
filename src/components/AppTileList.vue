@@ -33,7 +33,7 @@ tileStore.$subscribe(() => {
 
 const draggedIndex = ref<number | null>(null);
 
-const onDragStart = (index: number) => {
+const onDragStart = (index: number): void => {
   if (editedTile.value) {
     return;
   }
@@ -41,7 +41,7 @@ const onDragStart = (index: number) => {
   draggedIndex.value = index;
 };
 
-const onDragEnd = () => {
+const onDragEnd = (): void => {
   if (editedTile.value) {
     return;
   }
@@ -50,7 +50,7 @@ const onDragEnd = () => {
   tileStore.changeTilesOrder(tiles.value);
 };
 
-const onDragOver = (index: number) => {
+const onDragOver = (index: number): void => {
   if (editedTile.value) {
     return;
   }
