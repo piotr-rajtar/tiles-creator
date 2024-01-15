@@ -2,7 +2,9 @@
   <div :class="style.modal">
     <h2 :class="style.header">Color Picker Form</h2>
     <div :class="style.closeButton">
-      <AppButton :variant="buttonVariant.danger" @click="closeEditMode">X</AppButton>
+      <AppButton :variant="buttonVariant.danger" test-id="closeButton" @click="closeEditMode">
+        X
+      </AppButton>
     </div>
 
     <form :class="style.form">
@@ -24,13 +26,20 @@
             style.formField__hexInput,
             { [style['formField__hexInput--invalid']]: isHexColorInvalid },
           ]"
+          test-id="hexInput"
           @blur="onHexColorFieldBlur"
         />
-        <p v-if="isHexColorInvalid" :class="style.formField__hexInputErrorMessage">
+        <p
+          v-if="isHexColorInvalid"
+          :class="style.formField__hexInputErrorMessage"
+          test-id="errorMessage"
+        >
           {{ hexColorErrorMessage }}
         </p>
       </div>
-      <AppButton :variant="buttonVariant.primary" @click="onChangeClick">Change</AppButton>
+      <AppButton :variant="buttonVariant.primary" test-id="changeButton" @click="onChangeClick">
+        Change
+      </AppButton>
     </form>
   </div>
 </template>
