@@ -40,7 +40,12 @@ const onAddTileClick = () => {
 </script>
 
 <style lang="scss" module="style">
+@use './scss/fonts.scss';
 @use './scss/spacings.scss';
+
+* {
+  font-family: fonts.$main-font;
+}
 
 .header {
   text-align: center;

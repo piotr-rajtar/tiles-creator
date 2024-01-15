@@ -45,6 +45,7 @@ const buttonVariantClass = computed<string>(() => {
 
 <style lang="scss" module="style">
 @use '../scss/colors.scss';
+@use '../scss/fonts.scss';
 @use '../scss/spacings.scss';
 
 $focus-box-shadow: 0 0 0 0.25rem;
@@ -53,6 +54,7 @@ $focus-box-shadow: 0 0 0 0.25rem;
   padding: spacings.$spacing-unit 2 * spacings.$spacing-unit;
   border: 1px solid;
   border-radius: spacings.$spacing-unit;
+  font-family: fonts.$button-font;
   font-size: 1rem;
   line-height: 1.5;
   color: colors.$white;
