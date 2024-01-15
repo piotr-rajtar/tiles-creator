@@ -136,6 +136,17 @@ describe('ColorFormModal', () => {
     expect(store.closeEditMode).toHaveBeenCalled();
   });
 
+  it('sets change button as disabled, when color is invalid', async () => {
+    const hexInput = wrapper.find('[test-id="hexInput"]');
+    hexInput.setValue('');
+    hexInput.trigger('blur');
+
+    await wrapper.vm.$nextTick();
+
+    const changeButtonAtrributes = wrapper.find('[test-id="changeButton"]').attributes();
+    expect(changeButtonAtrributes.disabled).not.toBeUndefined();
+  });
+
   it('does not call updateTile action after change button click, when color is invalid', async () => {
     const store = useTileStore();
 

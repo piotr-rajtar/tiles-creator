@@ -37,7 +37,12 @@
           {{ hexColorErrorMessage }}
         </p>
       </div>
-      <AppButton :variant="buttonVariant.primary" test-id="changeButton" @click="onChangeClick">
+      <AppButton
+        :disabled="isHexColorInvalid"
+        :variant="buttonVariant.primary"
+        test-id="changeButton"
+        @click="onChangeClick"
+      >
         Change
       </AppButton>
     </form>
